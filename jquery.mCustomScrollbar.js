@@ -1093,6 +1093,8 @@ and dependencies (minified).
 				sb=".mCSB_"+d.idx+"_scrollbar",
 				sel=$("#mCSB_"+d.idx+",#mCSB_"+d.idx+"_container,#mCSB_"+d.idx+"_container_wrapper,"+sb+" ."+classes[12]+",#mCSB_"+d.idx+"_dragger_vertical,#mCSB_"+d.idx+"_dragger_horizontal,"+sb+">a"),
 				mCSB_container=$("#mCSB_"+d.idx+"_container");
+			if (!mCSB_container.length)
+				return;
 			if(o.advanced.releaseDraggableSelectors){sel.add($(o.advanced.releaseDraggableSelectors));}
 			if(o.advanced.extraDraggableSelectors){sel.add($(o.advanced.extraDraggableSelectors));}
 			if(d.bindEvents){ /* check if events are bound */
@@ -1928,6 +1930,7 @@ and dependencies (minified).
 		_autoUpdate=function(rem){
 			var $this=$(this),d=$this.data(pluginPfx),o=d.opt,
 				mCSB_container=$("#mCSB_"+d.idx+"_container");
+			if (!mCSB_container.length) { return; }
 			if(rem){
 				/* 
 				removes autoUpdate timer 
@@ -2351,8 +2354,11 @@ and dependencies (minified).
 		
 		/* returns element position according to content */
 		_childPos=function(el){
-			var p=el.parents(".mCSB_container");
-			return [el.offset().top-p.offset().top,el.offset().left-p.offset().left];
+			var offset=el.parents(".mCSB_container").offset();
+			if (offset)
+				return [el.offset().top-offset.top,el.offset().left-offset.left];
+			else
+				return [0, 0];
 		},
 		/* -------------------- */
 		
